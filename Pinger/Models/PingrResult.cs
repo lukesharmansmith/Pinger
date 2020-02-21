@@ -6,15 +6,14 @@
 
     public class PingResult
     {
-        public PingResult(PingReply pingReply, DateTime requestTime, TimeSpan duration, IPAddress gatewayAddress)
+        public PingResult(long roundTripTime, DateTime requestTime, TimeSpan duration, IPAddress gatewayAddress, IPStatus status)
         {
-            this.PingReply = pingReply;
+            this.RoundTripTime = roundTripTime;
             this.RequestTime = requestTime;
             this.Duration = duration;
             this.GatewayAddress = gatewayAddress;
+            this.Status = status;
         }
-
-        public PingReply PingReply { get; }
 
         public DateTime RequestTime { get; }
 
@@ -22,6 +21,10 @@
 
         public IPAddress GatewayAddress { get; }
 
-        public bool IsSuccess => this.PingReply?.Status == IPStatus.Success;
+        public long RoundTripTime { get; }
+
+        public IPStatus Status { get; }
+
+        public bool IsSuccess => this.Status == IPStatus.Success;
     }
 }

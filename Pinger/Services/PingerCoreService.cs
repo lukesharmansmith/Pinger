@@ -6,10 +6,6 @@
 
     public class PingerCoreService
     {
-        private const int BufferLimit = 5;
-
-        private const int NotifyBackoffSeconds = 15;
-
         private readonly ITrayIconHandler trayIconHandler;
 
         private readonly IToastService toastService;
@@ -20,23 +16,31 @@
 
         private readonly RingBuffer<PingResult> sampleBuffer;
 
-        private readonly TimeSpan sampleTimingThreshold = TimeSpan.FromSeconds(5);
-
         private DateTime lastNotifyTime;
 
         private DateTime lastSampleTime;
 
         public PingerCoreService(ITrayIconHandler trayIconHandler, IToastService toastService, INetworkPinger networkPinger, IWindowHandler windowHandler)
         {
-            this.sampleBuffer = new RingBuffer<PingResult>(BufferLimit);
             this.trayIconHandler = trayIconHandler;
             this.toastService = toastService;
             this.networkPinger = networkPinger;
             this.windowHandler = windowHandler;
 
+            this.NotifyBackOff = TimeSpan.FromSeconds(15);
+            this.SampleTimingThreshold = TimeSpan.FromSeconds(5);
+            this.MaxSamples = 5;
+            this.sampleBuffer = new RingBuffer<PingResult>(this.MaxSamples);
+
             this.networkPinger.Response += this.OnPingerResponse;
             this.trayIconHandler.TrayIconClicked += (sender, arg) => windowHandler.ShowLiveWindow();
         }
+
+        public TimeSpan SampleTimingThreshold { get; set; }
+
+        public TimeSpan NotifyBackOff { get; set; }
+
+        public int MaxSamples { get; set; }
 
         public void Start()
         {
@@ -55,12 +59,12 @@
             var currentTime = DateTime.Now;
 
             // Only sample the buffer after X number of seconds
-            if ((currentTime - this.lastSampleTime) > this.sampleTimingThreshold)
+            if ((currentTime - this.lastSampleTime) > this.SampleTimingThreshold)
             {
                 var success = this.sampleBuffer.Get.All(x => x.IsSuccess);
 
                 // Dont over saturate the failure messages
-                if (!success && currentTime > this.lastNotifyTime.AddSeconds(NotifyBackoffSeconds))
+                if (!success && currentTime > this.lastNotifyTime.Add(NotifyBackOff))
                 {
                     this.lastNotifyTime = currentTime;
 

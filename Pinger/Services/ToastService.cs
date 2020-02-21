@@ -33,15 +33,15 @@
                         {
                             new AdaptiveText()
                             {
-                                Text = $"Ping response : {result.PingReply.Status}"
+                                Text = $"Ping response : {result.Status}"
                             },
                             new AdaptiveText()
                             {
-                                Text = $"Gateway : {(result.PingReply.Address == null ? string.Empty : result.PingReply.Address.ToString())}"
+                                Text = $"Gateway : {(result.GatewayAddress == null ? string.Empty : result.GatewayAddress.ToString())}"
                             },
                             new AdaptiveText()
                             {
-                                Text = $"RoundTrip time : {(result.PingReply.RoundtripTime == 0 ? result.Duration.TotalMilliseconds : result.PingReply.RoundtripTime )} ms"
+                                Text = $"RoundTrip time : {(result.RoundTripTime == 0 ? result.Duration.TotalMilliseconds : result.RoundTripTime )} ms"
                             },
                         },
                         Attribution = new ToastGenericAttributionText()

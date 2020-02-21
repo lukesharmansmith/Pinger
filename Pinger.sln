@@ -5,7 +5,11 @@ VisualStudioVersion = 16.0.29613.14
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pinger", "Pinger\Pinger.csproj", "{3515248A-4B9B-4692-854F-BBC6810A2E25}"
 EndProject
-Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "Pinger Installer", "PingerInstaller\Pinger Installer.wixproj", "{63B26D9D-B242-40B3-B0B6-E0C220FF85C0}"
+Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "Installer", "PingerInstaller\Installer.wixproj", "{63B26D9D-B242-40B3-B0B6-E0C220FF85C0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{6D29563E-2058-44B2-8B25-95FEB2C4AC3B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Support", "Support", "{D75202CE-7A67-426C-9BDC-CE56B58D0B18}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,9 +33,21 @@ Global
 		{63B26D9D-B242-40B3-B0B6-E0C220FF85C0}.Release|Any CPU.ActiveCfg = Release|x86
 		{63B26D9D-B242-40B3-B0B6-E0C220FF85C0}.Release|x86.ActiveCfg = Release|x86
 		{63B26D9D-B242-40B3-B0B6-E0C220FF85C0}.Release|x86.Build.0 = Release|x86
+		{6D29563E-2058-44B2-8B25-95FEB2C4AC3B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6D29563E-2058-44B2-8B25-95FEB2C4AC3B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6D29563E-2058-44B2-8B25-95FEB2C4AC3B}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{6D29563E-2058-44B2-8B25-95FEB2C4AC3B}.Debug|x86.Build.0 = Debug|Any CPU
+		{6D29563E-2058-44B2-8B25-95FEB2C4AC3B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6D29563E-2058-44B2-8B25-95FEB2C4AC3B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6D29563E-2058-44B2-8B25-95FEB2C4AC3B}.Release|x86.ActiveCfg = Release|Any CPU
+		{6D29563E-2058-44B2-8B25-95FEB2C4AC3B}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{63B26D9D-B242-40B3-B0B6-E0C220FF85C0} = {D75202CE-7A67-426C-9BDC-CE56B58D0B18}
+		{6D29563E-2058-44B2-8B25-95FEB2C4AC3B} = {D75202CE-7A67-426C-9BDC-CE56B58D0B18}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {DBAA25EC-F116-4DAC-BEE2-7710ED403DF0}

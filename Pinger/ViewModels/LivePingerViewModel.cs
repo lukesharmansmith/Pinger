@@ -114,8 +114,8 @@
             Application.Current.Dispatcher.Invoke(() =>
             {
                 this.Address = e.Result.GatewayAddress.ToString();
-                this.Reply = e.Result.PingReply.Status.ToString();
-                this.RoundTripTime = e.Result.PingReply.RoundtripTime;
+                this.Reply = e.Result.Status.ToString();
+                this.RoundTripTime = e.Result.RoundTripTime;
                 this.RequestTime = e.Result.RequestTime.TimeOfDay;
                 this.Duration = e.Result.Duration.TotalMilliseconds;
             });

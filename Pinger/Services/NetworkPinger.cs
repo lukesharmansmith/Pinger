@@ -74,7 +74,7 @@
                         var reply = pingSender.Send(this.Gateway, timeout, bufferData, options);
                         var recvTimeDuration = DateTime.Now - requestTimestamp;
 
-                        this.Response?.Invoke(this, new PingerResultEventArgs(new PingResult(reply, requestTimestamp, recvTimeDuration, this.Gateway)));
+                        this.Response?.Invoke(this, new PingerResultEventArgs(new PingResult(reply.RoundtripTime, requestTimestamp, recvTimeDuration, this.Gateway, reply.Status)));
                     }
                     catch (Exception ex)
                     {
