@@ -2,6 +2,7 @@
 {
     using Microsoft.Toolkit.Uwp.Notifications;
     using Pinger.Models;
+    using System.Windows;
     using Windows.Data.Xml.Dom;
     using Windows.UI.Notifications;
 
@@ -97,12 +98,15 @@
         {
             //ToastNotificationManager.History.Clear();
 
-            var doc = new XmlDocument();
-            doc.LoadXml(content.GetContent());
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                var doc = new XmlDocument();
+                doc.LoadXml(content.GetContent());
 
-            var toast = new ToastNotification(doc);
+                var toast = new ToastNotification(doc);
 
-            toastNotifier.Show(toast);
+                toastNotifier.Show(toast);
+            });
         }
     }
 }
