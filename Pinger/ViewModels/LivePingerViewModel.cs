@@ -1,5 +1,6 @@
 ﻿namespace Pinger.ViewModels
 {
+    using Pinger.Infrastructure;
     using Pinger.Models;
     using Pinger.Services;
     using Prism.Commands;
@@ -23,6 +24,13 @@
         private TimeSpan requestTime;
 
         private double duration;
+
+        public LivePingerViewModel()
+          :  this(BootStrapper.Instance.Get<INetworkPinger>(), BootStrapper.Instance.Get<IWindowHandler>())
+        {
+            // Work around a potential netcore issue where application wide resource cannot be resolved when binding to datacontext  
+            // https://github.com/dotnet/wpf/issues/2543
+        }
 
         public LivePingerViewModel(INetworkPinger pinger, IWindowHandler windowHandler)
         {

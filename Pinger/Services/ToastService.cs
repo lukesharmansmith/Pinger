@@ -14,7 +14,7 @@
         public ToastService(IResourceLocator resourceLocator)
         {
             this.resourceLocator = resourceLocator;
-            this.toastNotifier = ToastNotificationManager.CreateToastNotifier("PingerApplication");
+            this.toastNotifier = ToastNotificationManager.CreateToastNotifier("SharmanSmith.Pinger");
         }
 
         public void Show(PingResult result)

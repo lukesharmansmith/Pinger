@@ -4,12 +4,15 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+        xmlns:viewmodels="clr-namespace:Pinger.ViewModels"
         mc:Ignorable="d"
         Background="#222222"
         FontSize="20"
         Foreground="GhostWhite"
-        Title="Pinger View" WindowStyle="SingleBorderWindow" ResizeMode="NoResize" Height="300" Width="500"
-        DataContext="{Binding LivePingerViewModel, Source={StaticResource ViewModelServiceLocator} }">
+        Title="Pinger View (NetCore)" WindowStyle="SingleBorderWindow" ResizeMode="NoResize" Height="300" Width="500">
+    <Window.DataContext>
+        <viewmodels:LivePingerViewModel />
+    </Window.DataContext>
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
             <i:InvokeCommandAction Command="{Binding LoadedCommand}" />

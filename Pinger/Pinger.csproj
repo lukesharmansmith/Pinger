@@ -10,8 +10,19 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Assets\IconBadToast.png" />
+    <None Remove="Assets\IconNormalToast.png" />
     <None Remove="Assets\TrayIconBad.ico" />
     <None Remove="Assets\TrayIconNormal.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Assets\IconBadToast.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\IconNormalToast.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>

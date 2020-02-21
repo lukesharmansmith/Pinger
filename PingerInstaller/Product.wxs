@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+	<Product Id="*" Name="PingerInstaller" Language="1033" Version="1.0.0.0" Manufacturer="SharmanSmith" UpgradeCode="9a99a754-97c3-469e-b862-e58bd000a3dc">
+		<Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
+
+		<MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
+		<MediaTemplate />
+
+		<Feature Id="ProductFeature" Title="PingerInstaller" Level="1">
+			<ComponentGroupRef Id="ProductComponents" />
+		</Feature>
+	</Product>
+
+	<Fragment>
+		<Directory Id="TARGETDIR" Name="SourceDir">
+			<Directory Id="ProgramFilesFolder">
+				<Directory Id="INSTALLFOLDER" Name="PingerInstaller" />
+			</Directory>
+      <Directory Id="ProgramMenuFolder">
+      </Directory>
+      <Directory Id="StartupFolder">
+      </Directory>
+		</Directory>
+	</Fragment>
+
+  <Fragment>
+    <DirectoryRef Id="ProgramMenuFolder">
+      <Component Id="ApplicationShortcut" Guid="EF9BE8D3-7C3E-4FC1-9483-FB57F784340B">
+        <Shortcut Id="ApplicationStartMenuShortcut" Name="Pinger" Description="Pinger to keep powerlines up" Target="[INSTALLFOLDER]Pinger.exe" WorkingDirectory="INSTALLFOLDER">
+
+          <!--AUMID-->
+          <ShortcutProperty Key="System.AppUserModel.ID" Value="SharmanSmith.Pinger"/>
+
+          <!--COM CLSID, specifying which CLSID to activate when toast clicked-->
+          <ShortcutProperty Key="System.AppUserModel.ToastActivatorCLSID" Value="{FF8271A6-8F6C-4D51-B2DA-9331DD37E707}"/>
+
+        </Shortcut>
+
+        <RemoveFile Id="RemoveApplicationShortcut" Directory="ProgramMenuFolder" Name="Pinger" On="uninstall"/>
+        <RegistryValue Root="HKCU" Key="Software\Pinger" Name="installed" Type="integer" Value="1" KeyPath="yes" />
+      </Component>
+    </DirectoryRef>
+  </Fragment>
+
+  <Fragment>
+    <DirectoryRef Id="StartupFolder">
+      <Component Id="ApplicationShortcutStartup" Guid="EBEF61F8-F65C-41FA-AF2B-1B76915E73B5">
+        <Shortcut Id="ApplicationStartMenuShortcutStartup" Name="Pinger" Description="Pinger to keep powerlines up" Target="[INSTALLFOLDER]Pinger.exe" WorkingDirectory="INSTALLFOLDER">
+
+          <!--AUMID-->
+          <ShortcutProperty Key="System.AppUserModel.ID" Value="SharmanSmith.Pinger"/>
+          
+          <!--COM CLSID, specifying which CLSID to activate when toast clicked-->
+          <ShortcutProperty Key="System.AppUserModel.ToastActivatorCLSID" Value="{FF8271A6-8F6C-4D51-B2DA-9331DD37E707}"/>
+
+        </Shortcut>
+
+        <RemoveFile Id="RemoveApplicationShortcutStartup" Name="Pinger" On="uninstall"/>
+        <RegistryValue Root="HKCU" Key="Software\Pinger" Name="installed" Type="integer" Value="1" KeyPath="yes" />
+      </Component>
+    </DirectoryRef>
+  </Fragment>
+
+	<Fragment>
+		<ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
+
+      <Component Id="cmp7497E0B354AEA7F54D987BCDF7301E52" Guid="*">
+        <File Id="fil553C5E9BD821B2301960E964847F4481" KeyPath="yes" Source="$(var.Pinger.TargetDir)\CommonServiceLocator.dll" />
+      </Component>
+      <Component Id="cmpDF2A173873CB2DF4B359397F026B691C" Guid="*">
+        <File Id="filF77BADE6C443F07005CCC8598C0BF253" KeyPath="yes" Source="$(var.Pinger.TargetDir)\Microsoft.Toolkit.Uwp.Notifications.dll" />
+      </Component>
+      <Component Id="cmpDA60982F820038280380BE207B6E738E" Guid="*">
+        <File Id="filFB25B5D44CA54D4D876DD0B5BC0DA0E0" KeyPath="yes" Source="$(var.Pinger.TargetDir)\Ninject.dll" />
+      </Component>
+      <Component Id="cmp6AEF2CCC2ADF07FA5D51773B2CF1BCE5" Guid="*">
+        <File Id="fil68FD3FAA3B9EC9F3FD0AB5FF6A26F1A5" KeyPath="yes" Source="$(var.Pinger.TargetDir)\Pinger.deps.json" />
+      </Component>
+      <Component Id="cmpAA601917D38336291E3C5E719DECE4E1" Guid="*">
+        <File Id="fil78A7F324B5116F7E3D1CFF17A931000C" KeyPath="yes" Source="$(var.Pinger.TargetDir)\Pinger.dll" />
+      </Component>
+      <Component Id="cmpBBA54EE4073C27AC2F14D6BF069D7BC5" Guid="*">
+        <File Id="fil0977754F5DE363D34F11DD9F561D149A" KeyPath="yes" Source="$(var.Pinger.TargetDir)\Pinger.exe" />
+      </Component>
+      <Component Id="cmp9B44285D34DB589EE3E6B740FE681A04" Guid="*">
+        <File Id="fil6464927DAC1AFF0ECDC36A40544FD385" KeyPath="yes" Source="$(var.Pinger.TargetDir)\Pinger.pdb" />
+      </Component>
+      <Component Id="cmpF783C80AC548FBC6D90E275AAC31A972" Guid="*">
+        <File Id="fil083F801BC3BD10F9AE3C52A648780E40" KeyPath="yes" Source="$(var.Pinger.TargetDir)\Pinger.runtimeconfig.dev.json" />
+      </Component>
+      <Component Id="cmp5B93AFED7F46DA519F1931F0BEC404E5" Guid="*">
+        <File Id="fil2B25037547B732EC0E9BD843F0A2787A" KeyPath="yes" Source="$(var.Pinger.TargetDir)\Pinger.runtimeconfig.json" />
+      </Component>
+      <Component Id="cmp59564654D02343646998A8D6A6F0C25F" Guid="*">
+        <File Id="fil86F2842A309A2CABD479166F2B4E0588" KeyPath="yes" Source="$(var.Pinger.TargetDir)\Prism.dll" />
+      </Component>
+      <Component Id="cmpA9A2AB3353E22A8DA16EAAEE63473B2F" Guid="*">
+        <File Id="fil88EDC55735A4B2968B2469EF3EB5D6E7" KeyPath="yes" Source="$(var.Pinger.TargetDir)\Prism.Wpf.dll" />
+      </Component>
+      <Component Id="cmp017BFB3832A5B110A2B3A350E13F2A5C" Guid="*">
+        <File Id="fil17E34524E8398461D615894C92558FE9" KeyPath="yes" Source="$(var.Pinger.TargetDir)\System.Windows.Interactivity.dll" />
+      </Component>
+
+      <Component Id="cmp167AE52B9998253CFDCA35CF9F89AAD5" Guid="*">
+        <File Id="filA5FE22AAEB78BB6901A1D4D291C40F40" KeyPath="yes" Source="$(var.Pinger.TargetDir)\Assets\IconBadToast.png" />
+      </Component>
+      <Component Id="cmpA75E1B7B5702EDD3414AEB118F279481" Guid="*">
+        <File Id="fil354673CA565CC9E849B155B8AE8FB290" KeyPath="yes" Source="$(var.Pinger.TargetDir)\Assets\IconNormalToast.png" />
+      </Component>
+      
+      <!--Tell WiX to install the shortcut-->
+      <ComponentRef Id="ApplicationShortcut"/>
+      <ComponentRef Id="ApplicationShortcutStartup"/>
+      
+		</ComponentGroup>
+	</Fragment>
+</Wix>

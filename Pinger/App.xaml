@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:Pinger.Infrastructure">
     <Application.Resources>
+        <!-- Defined but causes exceptions when ran as cannot be found TODO fix once netcore 3.x fixes-->
         <local:ServiceLocator x:Key="ViewModelServiceLocator" />
     </Application.Resources>
 </Application>
