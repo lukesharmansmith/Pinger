@@ -95,7 +95,7 @@
 
         private void ShowToastInternal(ToastContent content)
         {
-            ToastNotificationManager.History.Clear();
+            //ToastNotificationManager.History.Clear();
 
             var doc = new XmlDocument();
             doc.LoadXml(content.GetContent());

@@ -47,10 +47,10 @@
         private void OnPingerResponse(object sender, PingerResultEventArgs e)
         {
             this.sampleBuffer.AddItemToQueue(e.Result);
-            this.CheckBuffer();
+            this.CheckBuffer(e.Result);
         }
 
-        private void CheckBuffer()
+        private void CheckBuffer(PingResult latestResult)
         {
             var currentTime = DateTime.Now;
 
@@ -64,7 +64,7 @@
                 {
                     this.lastNotifyTime = currentTime;
 
-                    this.toastService.Show(this.sampleBuffer.Get.First());
+                    this.toastService.Show(latestResult);
                 }
 
                 this.trayIconHandler.SetTrayIconState(success ? NetworkUpState.Normal : NetworkUpState.Failed);

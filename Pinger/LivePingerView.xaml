@@ -3,10 +3,49 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Pinger"
+        xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
         mc:Ignorable="d"
-        Title="LivePingerView" Height="450" Width="800">
-    <Grid>
-        
+        Background="#222222"
+        FontSize="20"
+        Foreground="GhostWhite"
+        Title="Pinger View" WindowStyle="SingleBorderWindow" ResizeMode="NoResize" Height="300" Width="500"
+        DataContext="{Binding LivePingerViewModel, Source={StaticResource ViewModelServiceLocator} }">
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding LoadedCommand}" />
+        </i:EventTrigger>
+        <i:EventTrigger EventName="Unloaded">
+            <i:InvokeCommandAction Command="{Binding UnLoadedCommand}" />
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+    <Grid Margin="5">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <TextBlock Grid.Row="0" Grid.Column="0" Margin="2" Text="Gateway:" />
+        <TextBlock Grid.Row="1" Grid.Column="0" Margin="2" Text="Reply:" />
+        <TextBlock Grid.Row="2" Grid.Column="0" Margin="2" Text="Round trip time:" />
+        <TextBlock Grid.Row="3" Grid.Column="0" Margin="2" Text="Send:" />
+        <TextBlock Grid.Row="4" Grid.Column="0" Margin="2" Text="Duration:" />
+
+        <TextBlock Grid.Row="0" Grid.Column="1" Margin="2" Text="{Binding Address}" />
+        <TextBlock Grid.Row="1" Grid.Column="1" Margin="2" Text="{Binding Reply}" />
+        <TextBlock Grid.Row="2" Grid.Column="1" Margin="2" Text="{Binding RoundTripTime, StringFormat={}{0} ms}" />
+        <TextBlock Grid.Row="3" Grid.Column="1" Margin="2" Text="{Binding RequestTime}" />
+        <TextBlock Grid.Row="4" Grid.Column="1" Margin="2" Text="{Binding Duration, StringFormat={}{0} ms}" />
+
+        <Button Grid.Row="6" Content="Exit" Command="{Binding ExitCommand}"/>
+
     </Grid>
 </Window>

@@ -18,5 +18,10 @@
             // And make sure to maximize the window too, in case it was currently minimized
             App.Current.Windows[0].WindowState = WindowState.Normal;
         }
+
+        public void ExitApplication()
+        {
+            Application.Current.Shutdown();
+        }
     }
 }
