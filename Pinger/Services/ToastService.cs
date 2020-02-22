@@ -8,20 +8,23 @@
 
     public class ToastService : IToastService
     {
+        private const string ApplicatiopnID = "SharmanSmith.Pinger";
+
         private readonly ToastNotifier toastNotifier;
+
+        private readonly ToastNotificationHistory toastNotificationHistory;
 
         private readonly IResourceLocator resourceLocator;
 
         public ToastService(IResourceLocator resourceLocator)
         {
             this.resourceLocator = resourceLocator;
-            this.toastNotifier = ToastNotificationManager.CreateToastNotifier("SharmanSmith.Pinger");
+            this.toastNotifier = ToastNotificationManager.CreateToastNotifier(ApplicatiopnID);
+            this.toastNotificationHistory = ToastNotificationManager.History;
         }
 
-        public void Show(PingResult result)
+        public void Show(ToastMessage message)
         {
-            var image = this.resourceLocator.GetPathToAsset(result.IsSuccess ? ResourceAsset.ToastIconNormal : ResourceAsset.ToastIconBad);
-
             ToastContent toastContent = new ToastContent()
             {
                 Launch = "action=ok",
@@ -34,15 +37,15 @@
                         {
                             new AdaptiveText()
                             {
-                                Text = $"Ping response : {result.Status}"
+                                Text = message.Title
                             },
                             new AdaptiveText()
                             {
-                                Text = $"Gateway : {(result.GatewayAddress == null ? string.Empty : result.GatewayAddress.ToString())}"
+                                Text = message.Line1
                             },
                             new AdaptiveText()
                             {
-                                Text = $"RoundTrip time : {(result.RoundTripTime == 0 ? result.Duration.TotalMilliseconds : result.RoundTripTime )} ms"
+                                Text = message.Line2
                             },
                         },
                         Attribution = new ToastGenericAttributionText()
@@ -51,14 +54,14 @@
                         },
                         AppLogoOverride = new ToastGenericAppLogo()
                         {
-                            Source = image,
-                            HintCrop = ToastGenericAppLogoCrop.Circle
+                            Source = this.resourceLocator.GetPathToAsset(message.Icon),
+                            HintCrop = ToastGenericAppLogoCrop.None
                         }
-                    }
+                    },
                 }
             };
 
-            ShowToastInternal(toastContent);
+            this.ShowToastInternal(toastContent);
         }
 
         public void Show(string message)
@@ -96,8 +99,6 @@
 
         private void ShowToastInternal(ToastContent content)
         {
-            //ToastNotificationManager.History.Clear();
-
             Application.Current.Dispatcher.Invoke(() =>
             {
                 var doc = new XmlDocument();
@@ -105,7 +106,8 @@
 
                 var toast = new ToastNotification(doc);
 
-                toastNotifier.Show(toast);
+                this.toastNotificationHistory.Clear(ApplicatiopnID);
+                this.toastNotifier.Show(toast);
             });
         }
     }

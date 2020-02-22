@@ -15,6 +15,12 @@
             this.Status = status;
         }
 
+        public PingResult(IPAddress gatewayAddress, Exception exception)
+        {
+            this.PingException = exception;
+            this.GatewayAddress = gatewayAddress;
+        }
+
         public DateTime RequestTime { get; }
 
         public TimeSpan Duration { get; }
@@ -25,6 +31,8 @@
 
         public IPStatus Status { get; }
 
-        public bool IsSuccess => this.Status == IPStatus.Success;
+        public bool IsSuccess => this.Status == IPStatus.Success && this.PingException == null;
+
+        public Exception PingException { get; }
     }
 }

@@ -1,10 +1,10 @@
-﻿using Pinger.Models;
-
-namespace Pinger.Services
+﻿namespace Pinger.Services
 {
+    using Pinger.Models;
+
     public interface IToastService
     {
-        void Show(PingResult result);
+        void Show(ToastMessage message);
         void Show(string message);
     }
 }

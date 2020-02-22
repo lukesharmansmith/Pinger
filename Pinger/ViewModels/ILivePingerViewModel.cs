@@ -7,7 +7,6 @@
     {
         string Address { get; set; }
         double Duration { get; set; }
-        ICommand ExitCommand { get; }
         ICommand LoadedCommand { get; }
         string Reply { get; set; }
         TimeSpan RequestTime { get; set; }

@@ -78,7 +78,7 @@
                     }
                     catch (Exception ex)
                     {
-                        // TODO handle
+                        this.Response?.Invoke(this, new PingerResultEventArgs(new PingResult(this.Gateway, ex)));
                     }
 
                     await Task.Delay(this.delay, token);

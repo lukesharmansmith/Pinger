@@ -6,13 +6,9 @@
 
     public class PingerCoreService
     {
-        private readonly ITrayIconHandler trayIconHandler;
-
-        private readonly IToastService toastService;
+        private readonly IInterfaceService interfaceService;
 
         private readonly INetworkPinger networkPinger;
-
-        private readonly IWindowHandler windowHandler;
 
         private readonly RingBuffer<PingResult> sampleBuffer;
 
@@ -20,12 +16,10 @@
 
         private DateTime lastSampleTime;
 
-        public PingerCoreService(ITrayIconHandler trayIconHandler, IToastService toastService, INetworkPinger networkPinger, IWindowHandler windowHandler)
+        public PingerCoreService(IInterfaceService interfaceService, INetworkPinger networkPinger)
         {
-            this.trayIconHandler = trayIconHandler;
-            this.toastService = toastService;
+            this.interfaceService = interfaceService;
             this.networkPinger = networkPinger;
-            this.windowHandler = windowHandler;
 
             this.NotifyBackOff = TimeSpan.FromSeconds(15);
             this.SampleTimingThreshold = TimeSpan.FromSeconds(5);
@@ -33,7 +27,6 @@
             this.sampleBuffer = new RingBuffer<PingResult>(this.MaxSamples);
 
             this.networkPinger.Response += this.OnPingerResponse;
-            this.trayIconHandler.TrayIconClicked += (sender, arg) => windowHandler.ShowLiveWindow();
         }
 
         public TimeSpan SampleTimingThreshold { get; set; }
@@ -44,34 +37,39 @@
 
         public void Start()
         {
-            this.toastService.Show("Pinger starting...");
+            this.interfaceService.ToastService.Show("Pinger starting...");
             this.networkPinger.Start();
         }
 
         private void OnPingerResponse(object sender, PingerResultEventArgs e)
         {
             this.sampleBuffer.AddItemToQueue(e.Result);
-            this.CheckBuffer(e.Result);
+            this.CheckBuffer();
         }
 
-        private void CheckBuffer(PingResult latestResult)
+        private void CheckBuffer()
         {
             var currentTime = DateTime.Now;
 
             // Only sample the buffer after X number of seconds
             if ((currentTime - this.lastSampleTime) > this.SampleTimingThreshold)
             {
-                var success = this.sampleBuffer.Get.All(x => x.IsSuccess);
+                var multipleFailures = this.sampleBuffer.Get.All(x => !x.IsSuccess);
 
                 // Dont over saturate the failure messages
-                if (!success && currentTime > this.lastNotifyTime.Add(NotifyBackOff))
+                if (multipleFailures && currentTime > this.lastNotifyTime.Add(NotifyBackOff))
                 {
                     this.lastNotifyTime = currentTime;
 
-                    this.toastService.Show(latestResult);
+                    this.interfaceService.ToastService.Show(new ToastMessage
+                    {
+                        Title = "Multiple Bad Pings",
+                        Line1 = $"{MaxSamples} bad responses attempting to ping {this.networkPinger.Gateway.ToString()}",
+                        Icon = ResourceAsset.ToastIconBad
+                    });
                 }
 
-                this.trayIconHandler.SetTrayIconState(success ? NetworkUpState.Normal : NetworkUpState.Failed);
+                this.interfaceService.TrayIconHandler.SetTrayIconState(multipleFailures ? NetworkUpState.Failed : NetworkUpState.Normal);
 
                 this.lastSampleTime = currentTime;
             }

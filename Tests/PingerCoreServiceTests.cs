@@ -25,19 +25,6 @@
         }
 
         [TestMethod]
-        public void PingerCoreServiceTests_TrayIconClicked_OpenWindow()
-        {
-            var mockTrayIconHandler = new Mock<ITrayIconHandler>();
-            var mockWindowHandler = new Mock<IWindowHandler>();
-
-            var pinger = GetInstance(mockTrayHandler: mockTrayIconHandler, mockWindowHandler: mockWindowHandler);
-
-            mockTrayIconHandler.Raise(x => x.TrayIconClicked += null, EventArgs.Empty);
-
-            mockWindowHandler.Verify(x => x.ShowLiveWindow(), Times.Once, "Should of called the open window method");
-        }
-
-        [TestMethod]
         public async Task PingerCoreServiceTests_PingerResponse_GoodResponse_NoToast()
         {
             var mockTrayIconHandler = new Mock<ITrayIconHandler>();
@@ -59,7 +46,7 @@
             mockNetworkPinger.Raise(x => x.Response += null, GetSuccessResult());
             mockNetworkPinger.Raise(x => x.Response += null, GetSuccessResult());
 
-            mockToastService.Verify(x => x.Show(It.IsAny<PingResult>()), Times.Never, "Should of notified about failed network state - Toast");
+            mockToastService.Verify(x => x.Show(It.IsAny<ToastMessage>()), Times.Never, "Should of notified about failed network state - Toast");
             mockTrayIconHandler.Verify(x => x.SetTrayIconState(NetworkUpState.Failed), Times.Never, "Should of notified about failed network state - Tray");
         }
 
@@ -85,7 +72,7 @@
             mockNetworkPinger.Raise(x => x.Response += null, GetFailedResult());
             mockNetworkPinger.Raise(x => x.Response += null, GetFailedResult());
 
-            mockToastService.Verify(x => x.Show(It.IsAny<PingResult>()), Times.Once, "Should not of notified about failed network state - Toast");
+            mockToastService.Verify(x => x.Show(It.IsAny<ToastMessage>()), Times.Once, "Should not of notified about failed network state - Toast");
             mockTrayIconHandler.Verify(x => x.SetTrayIconState(NetworkUpState.Failed), Times.AtLeastOnce, "Should not of notified about failed network state - Tray");
         }
 
@@ -110,7 +97,12 @@
             if (mockNetworkPinger == null) mockNetworkPinger = new Mock<INetworkPinger>();
             if (mockWindowHandler == null) mockWindowHandler = new Mock<IWindowHandler>();
 
-            return new PingerCoreService(mockTrayHandler.Object, mockToastService.Object, mockNetworkPinger.Object, mockWindowHandler.Object);
+            var mockInterfaceService = new Mock<IInterfaceService>();
+            mockInterfaceService.SetupGet(x => x.ToastService).Returns(mockToastService.Object);
+            mockInterfaceService.SetupGet(x => x.TrayIconHandler).Returns(mockTrayHandler.Object);
+            mockInterfaceService.SetupGet(x => x.WindowHandler).Returns(mockWindowHandler.Object);
+
+            return new PingerCoreService(mockInterfaceService.Object, mockNetworkPinger.Object);
         }
     }
 }

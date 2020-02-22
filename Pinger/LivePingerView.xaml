@@ -9,7 +9,7 @@
         Background="#222222"
         FontSize="20"
         Foreground="GhostWhite"
-        Title="Pinger View (NetCore)" WindowStyle="SingleBorderWindow" ResizeMode="NoResize" Height="300" Width="500">
+        Title="Pinger Live View" WindowStyle="SingleBorderWindow" ResizeMode="NoResize" Height="200" Width="500">
     <Window.DataContext>
         <viewmodels:LivePingerViewModel />
     </Window.DataContext>
@@ -47,8 +47,6 @@
         <TextBlock Grid.Row="2" Grid.Column="1" Margin="2" Text="{Binding RoundTripTime, StringFormat={}{0} ms}" />
         <TextBlock Grid.Row="3" Grid.Column="1" Margin="2" Text="{Binding RequestTime}" />
         <TextBlock Grid.Row="4" Grid.Column="1" Margin="2" Text="{Binding Duration, StringFormat={}{0} ms}" />
-
-        <Button Grid.Row="6" Content="Exit" Command="{Binding ExitCommand}"/>
 
     </Grid>
 </Window>

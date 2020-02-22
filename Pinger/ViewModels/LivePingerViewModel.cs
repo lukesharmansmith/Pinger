@@ -13,8 +13,6 @@
     {
         private readonly INetworkPinger pinger;
 
-        private readonly IWindowHandler windowHandler;
-
         private string address;
 
         private string reply;
@@ -26,16 +24,15 @@
         private double duration;
 
         public LivePingerViewModel()
-          :  this(BootStrapper.Instance.Get<INetworkPinger>(), BootStrapper.Instance.Get<IWindowHandler>())
+          :  this(BootStrapper.Instance.Get<INetworkPinger>())
         {
             // Work around a potential netcore issue where application wide resource cannot be resolved when binding to datacontext  
             // https://github.com/dotnet/wpf/issues/2543
         }
 
-        public LivePingerViewModel(INetworkPinger pinger, IWindowHandler windowHandler)
+        public LivePingerViewModel(INetworkPinger pinger)
         {
             this.pinger = pinger;
-            this.windowHandler = windowHandler;
 
             this.LoadedCommand = new DelegateCommand(() =>
             {
@@ -46,18 +43,11 @@
             {
                 this.pinger.Response -= this.OnPingerResponse;
             });
-
-            this.ExitCommand = new DelegateCommand(() =>
-            {
-                this.windowHandler.ExitApplication();
-            });
         }
 
         public ICommand LoadedCommand { get; }
 
         public ICommand UnLoadedCommand { get; }
-
-        public ICommand ExitCommand { get; }
 
         public string Address
         {

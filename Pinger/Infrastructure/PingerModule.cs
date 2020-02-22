@@ -14,11 +14,12 @@
             Bind<IToastService>().To<ToastService>().InSingletonScope();
             Bind<ITrayIconHandler>().To<TrayIconHandler>().InSingletonScope();
             Bind<IWindowHandler>().To<WindowHandler>().InSingletonScope();
+            Bind<IInterfaceService>().To<InterfaceService>().InSingletonScope();
 
             Bind<PingerCoreService>().ToSelf().InSingletonScope();
 
             // Views
-            Bind<ILivePingerViewModel>().To<LivePingerViewModel>().InSingletonScope();
+            Bind<ILivePingerViewModel>().To<LivePingerViewModel>();
         }
     }
 }
