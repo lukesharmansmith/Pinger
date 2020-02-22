@@ -32,6 +32,8 @@
             var mockNetworkPinger = new Mock<INetworkPinger>();
             var mockToastService = new Mock<IToastService>();
 
+            mockNetworkPinger.SetupGet(x => x.Gateway).Returns(IPAddress.Parse("127.0.0.1"));
+
             var pinger = GetInstance(mockTrayIconHandler, mockToastService, mockNetworkPinger, mockWindowHandler);
 
             pinger.SampleTimingThreshold = TimeSpan.FromSeconds(1);
@@ -57,6 +59,8 @@
             var mockWindowHandler = new Mock<IWindowHandler>();
             var mockNetworkPinger = new Mock<INetworkPinger>();
             var mockToastService = new Mock<IToastService>();
+
+            mockNetworkPinger.SetupGet(x => x.Gateway).Returns(IPAddress.Parse("127.0.0.1"));
 
             var pinger = GetInstance(mockTrayIconHandler, mockToastService, mockNetworkPinger, mockWindowHandler);
 
